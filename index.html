@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasir Kang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col justify-center items-center gap-[50px] bg-gradient-to-r from-[#031557] to-[#1697bb] px-[30px] py-[30px]">
+  <div class="flex flex-wrap justify-center items-center gap-[50px]">
+    <div id="gunkan" value="3500" class="item flex flex-col justify-center items-center gap-[30px] bg-[#ffffff] px-[30px] py-[20px] rounded-[30px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">
+      <div class="flex flex-col justify-center items-center gap-[10px]">
+        <img class="flex w-[150px]" src="https://www.svgrepo.com/show/356631/sushi-01-gunkanmaki-tobiko.svg" alt="Gunkan">
+        <p class="text-center text-[30px] font-mono judul">Gunkan</p>
+      </div>
+      <p class="text-center text-[25px] font-mono">Rp.3500</p>
+    </div>
+    <div id="kimbab" value="3000" class="item flex flex-col justify-center items-center gap-[30px] bg-[#ffffff] px-[30px] py-[20px] rounded-[30px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">
+      <div class="flex flex-col justify-center items-center gap-[10px]">
+        <img class="flex w-[150px]" src="https://www.svgrepo.com/show/202585/sushi.svg" alt="Kimbab">
+        <p class="text-center text-[30px] font-mono judul">Kimbab</p>
+      </div>
+      <p class="text-center text-[25px] font-mono">Rp.3000</p>
+    </div>
+    <div id="nigiri" value="2000" class="item flex flex-col justify-center items-center gap-[30px] bg-[#ffffff] px-[30px] py-[20px] rounded-[30px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">
+      <div class="flex flex-col justify-center items-center gap-[10px]">
+        <img class="flex w-[150px]" src="https://www.svgrepo.com/show/505198/sushi.svg" alt="Nigiri">
+        <p class="text-center text-[30px] font-mono judul">Nigiri</p>
+      </div>
+      <p class="text-center text-[25px] font-mono">Rp.2000</p>
+    </div>
+    <div id="makiRoll" value="2000" class="item flex flex-col justify-center items-center gap-[30px] bg-[#ffffff] px-[30px] py-[20px] rounded-[30px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">
+      <div class="flex flex-col justify-center items-center gap-[10px]">
+        <img class="flex w-[150px]" src="https://www.svgrepo.com/show/475135/sushi.svg" alt="makiRoll">
+        <p class="text-center text-[30px] font-mono judul">Maki Roll</p>
+      </div>
+      <p class="text-center text-[25px] font-mono">Rp.2000</p>
+    </div>
+  </div>
+  <div class="flex flex-wrap justify-center items-center gap-[10px]">
+    <button id="submit" class="bg-white px-[15px] py-[10px] text-[15px] text-black font-bold font-mono rounded-[10px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">Submit</button>
+    <button id="reset" class="bg-white px-[15px] py-[10px] text-[15px] text-black font-bold font-mono rounded-[10px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">Reset</button>
+    <button id="check" class="bg-white px-[15px] py-[10px] text-[15px] text-black font-bold font-mono rounded-[10px] hover:bg-[#232323bd] hover:text-white duration-[0.3s]">Check</button>
+  </div>
+  <script>
+    // Ambil elemen tombol Submit, Reset, dan Check
+    const submitButton = document.getElementById('submit');
+    const resetButton = document.getElementById('reset');
+    const checkButton = document.getElementById('check');
+    // Ambil semua div item menu
+    const menuItems = document.querySelectorAll('.item');
+    // Inisialisasi variabel untuk menyimpan total harga
+    let totalPrice = 0;
+    // Objek untuk menyimpan jumlah setiap item yang ditambahkan
+    const itemCounts = {};
+
+    // Tambahkan event listener untuk setiap div item menu
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Ambil nama item dari teks di dalam div
+        const itemName = item.querySelector('.judul').textContent;
+        // Ambil harga dari atribut value
+        const price = parseInt(item.getAttribute('value'));
+        // Tambahkan harga ke total
+        totalPrice += price;
+        // Tambahkan item ke objek itemCounts atau tambahkan jumlah jika sudah ada
+        itemCounts[itemName] = (itemCounts[itemName] || 0) + 1;
+        // Tampilkan alert bahwa item telah ditambahkan
+        alert(`${itemName} ditambahkan`);
+      });
+    });
+
+    // Tambahkan event listener untuk tombol Submit
+    submitButton.addEventListener('click', function() {
+      // Tampilkan total pembelian dan daftar item beserta jumlahnya
+      let itemsAdded = "";
+      for (const [itemName, count] of Object.entries(itemCounts)) {
+        itemsAdded += `${itemName} ${count}x, `;
+      }
+      itemsAdded = itemsAdded.slice(0, -2); // Menghapus koma dan spasi terakhir
+      alert(`Total Pembelian: Rp.${totalPrice}\n\nItem ditambahkan:\n${itemsAdded}`);
+      // Reset total harga dan objek itemCounts ke 0 setelah ditampilkan
+      totalPrice = 0;
+      for (const key in itemCounts) {
+        itemCounts[key] = 0;
+      }
+    });
+
+    // Tambahkan event listener untuk tombol Reset
+    resetButton.addEventListener('click', function() {
+      // Reset total harga dan objek itemCounts ke 0
+      totalPrice = 0;
+      for (const key in itemCounts) {
+        itemCounts[key] = 0;
+      }
+      // Beri tahu pengguna bahwa reset telah dilakukan
+      alert("Reset berhasil!");
+    });
+
+    // Tambahkan event listener untuk tombol Check
+    checkButton.addEventListener('click', function() {
+      // Tampilkan daftar item beserta jumlahnya
+      let itemsAdded = "";
+      for (const [itemName, count] of Object.entries(itemCounts)) {
+        itemsAdded += `${itemName} ${count}x, `;
+      }
+      itemsAdded = itemsAdded.slice(0, -2); // Menghapus koma dan spasi terakhir
+      alert(`Item ditambahkan:\n${itemsAdded}`);
+    });
+  </script>
+</body>
+</html>
